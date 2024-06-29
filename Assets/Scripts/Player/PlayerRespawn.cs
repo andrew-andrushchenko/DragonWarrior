@@ -4,15 +4,23 @@ public class PlayerRespawn : MonoBehaviour
 {
     private Transform currentCheckpoint;
     private Health playerHealth;
+    private UIManager uIManager;
 
     private void Awake()
     {
         playerHealth = GetComponent<Health>();
-
+        uIManager = FindAnyObjectByType<UIManager>();
     }
 
-    public void Respawn()
+    public void CheckRespawn()
     {
+        if (currentCheckpoint == null)
+        {
+            // Show game over screen
+            uIManager.GameOver();
+            return;
+        }
+
         transform.position = currentCheckpoint.position;
         playerHealth.Respawn();
         Camera.main.GetComponent<CameraController>().MoveToNewRoom(currentCheckpoint.parent);
